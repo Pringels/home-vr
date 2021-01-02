@@ -8,7 +8,12 @@ import React, {
 import { useFrame, useLoader, useGraph, useThree } from 'react-three-fiber'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { OrbitControls } from '@react-three/drei'
-import { DefaultXRControllers, useXR, useXREvent } from '@react-three/xr'
+import {
+  DefaultXRControllers,
+  useXR,
+  useXREvent,
+  Select,
+} from '@react-three/xr'
 import './index.css'
 import * as THREE from 'three'
 
@@ -53,7 +58,7 @@ function Asset({ url }) {
 }
 
 export const App = () => {
-  const [position] = useState(new THREE.Vector3(0, 0, 0))
+  const [position, setPosition] = useState(new THREE.Vector3(0, 0, 0))
 
   const mesh = useRef()
   const { gl, camera } = useThree()
@@ -61,8 +66,7 @@ export const App = () => {
   useEffect(() => {
     const cam = gl.xr.isPresenting ? gl.xr.getCamera(camera) : camera
     mesh.current.add(cam)
-    console.log('ADDED', cam, gl.xr.isPresenting)
-    gl.xr.isPresenting && cam.position.set(new THREE.Vector3(10, 10, 10))
+    gl.xr.isPresenting && cam.position.set(10, 10, 10)
 
     return () => mesh.current.remove(cam)
   }, [gl.xr.isPresenting, gl.xr, camera, mesh])
@@ -79,11 +83,12 @@ export const App = () => {
   useFrame(() => {
     // console.log(mesh.current.children[0].position)
     if (controllers.length) {
-      // console.log(controllers)
-      // console.log(controllers[0].inputSource.gamepad.axes)
-      const [, , direction] = controllers[0].inputSource.gamepad.axes
-      mesh.current.position.set(new THREE.Vector3(direction * 2, 0, 0))
+      console.log(controllers)
+      console.log(controllers[0].inputSource.gamepad.axes)
+      const [, , direction, intensity] = controllers[0].inputSource.gamepad.axes
+      mesh.current.position.set(direction * intensity * 3, 0, 0)
     }
+    // mesh.current.position.set(-1, 0, 0)
   })
 
   const onSqueeze = useCallback(() => console.log('Squeezed', controllers[0]), [
@@ -97,7 +102,7 @@ export const App = () => {
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
 
-      {/* <Select
+      <Select
         onSelect={() => {
           console.log('SELECTED')
           mesh.current.children[0].position.set(new THREE.Vector3(10, 10, 10))
@@ -105,7 +110,7 @@ export const App = () => {
         }}
       >
         <Box position={position} />
-      </Select> */}
+      </Select>
 
       <mesh ref={mesh} scale={[1, 1, 1]} position={[-1, 0, 0]}>
         <boxBufferGeometry args={[1, 1, 1]} />
