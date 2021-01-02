@@ -67,6 +67,8 @@ export const App = () => {
     const cam = gl.xr.isPresenting ? gl.xr.getCamera(camera) : camera
     mesh.current.add(cam)
     console.log('ADDED', cam, gl.xr.isPresenting)
+    gl.xr.isPresenting && cam.position.set(new THREE.Vector3(10, 10, 10))
+
     return () => mesh.current.remove(cam)
   }, [gl.xr.isPresenting, gl.xr, camera, mesh])
 
@@ -81,6 +83,12 @@ export const App = () => {
 
   useFrame(() => {
     // console.log(mesh.current.children[0].position)
+    if (controllers.length) {
+      // console.log(controllers)
+      console.log(controllers[0].inputSource.gamepad.axes)
+      const [left, right] = controllers[0].inputSource.gamepad.axes
+      mesh.current.position.set(new THREE.Vector3(left, right, 0))
+    }
   })
 
   const onSqueeze = useCallback(() => console.log('Squeezed', controllers[0]), [
@@ -101,14 +109,16 @@ export const App = () => {
           setPosition((s) => new THREE.Vector3(10, 10, 10))
         }}
       >
-        <Box position={[-1.2, 0, 0]} />
+        <Box position={position} />
       </Select>
 
       <mesh position={position} ref={mesh}></mesh>
 
-      <group position={position}>
-        <primitive object={camera} />
-      </group>
+      {mesh.current && (
+        <group position={position}>
+          <primitive object={mesh.current.children[0]} />
+        </group>
+      )}
 
       <Suspense fallback={<Box position={[4, 0, 0]} />}>
         <Asset url="/HOME.obj" />
