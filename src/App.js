@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom'
 import React, {
   useRef,
   useState,
@@ -10,7 +9,6 @@ import { useFrame, useLoader, useGraph, useThree } from 'react-three-fiber'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { OrbitControls } from '@react-three/drei'
 import {
-  VRCanvas,
   DefaultXRControllers,
   useXR,
   useXREvent,
