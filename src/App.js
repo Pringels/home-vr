@@ -104,7 +104,7 @@ export const App = () => {
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
 
-      <Select
+      {/* <Select
         onSelect={() => {
           console.log('SELECTED')
           mesh.current.children[0].position.set(new THREE.Vector3(10, 10, 10))
@@ -112,9 +112,12 @@ export const App = () => {
         }}
       >
         <Box position={position} />
-      </Select>
+      </Select> */}
 
-      <mesh position={position} ref={mesh}></mesh>
+      <mesh ref={mesh} scale={[1, 1, 1]} position={[-1, 0, 0]}>
+        <boxBufferGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color={'hotpink'} />
+      </mesh>
 
       {mesh.current && (
         <group position={position}>
