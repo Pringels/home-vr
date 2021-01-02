@@ -8,12 +8,7 @@ import React, {
 import { useFrame, useLoader, useGraph, useThree } from 'react-three-fiber'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { OrbitControls } from '@react-three/drei'
-import {
-  DefaultXRControllers,
-  useXR,
-  useXREvent,
-  Select,
-} from '@react-three/xr'
+import { DefaultXRControllers, useXR, useXREvent } from '@react-three/xr'
 import './index.css'
 import * as THREE from 'three'
 
@@ -58,7 +53,7 @@ function Asset({ url }) {
 }
 
 export const App = () => {
-  const [position, setPosition] = useState(new THREE.Vector3(0, 0, 0))
+  const [position] = useState(new THREE.Vector3(0, 0, 0))
 
   const mesh = useRef()
   const { gl, camera } = useThree()
