@@ -87,7 +87,9 @@ export const App = () => {
       // console.log(controllers)
       // console.log(controllers[0].inputSource.gamepad.axes)
       const [, , direction, intensity] = controllers[0].inputSource.gamepad.axes
-      mesh.current.position.set(new THREE.Vector3(direction * intensity * 3, 0))
+      mesh.current.position.set(
+        new THREE.Vector3(direction * intensity * 3, 0, 0)
+      )
     }
   })
 
