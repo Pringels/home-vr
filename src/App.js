@@ -66,6 +66,7 @@ export const App = () => {
   useEffect(() => {
     const cam = gl.xr.isPresenting ? gl.xr.getCamera(camera) : camera
     mesh.current.add(cam)
+    console.log('ADDED', cam)
     return () => mesh.current.remove(cam)
   }, [gl.xr.isPresenting, gl.xr, camera, mesh])
 
@@ -87,6 +88,7 @@ export const App = () => {
     controllers,
   ])
   useXREvent('squeeze', onSqueeze)
+  console.log('position', position)
 
   return (
     <>
@@ -94,7 +96,7 @@ export const App = () => {
       <pointLight position={[10, 10, 10]} />
 
       <Select
-        onChange={() => {
+        onSelect={() => {
           console.log('SELECTED')
           setPosition((s) => new THREE.Vector3(10, 10, 10))
         }}
