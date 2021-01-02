@@ -4,6 +4,7 @@ import {  useFrame, useLoader, useGraph } from "react-three-fiber";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { OrbitControls } from '@react-three/drei'
 import { VRCanvas, DefaultXRControllers } from '@react-three/xr'
+import './index.css'
 
 function Box(props) {
   // This reference will give us direct access to the mesh
