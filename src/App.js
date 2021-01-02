@@ -66,7 +66,7 @@ export const App = () => {
   useEffect(() => {
     const cam = gl.xr.isPresenting ? gl.xr.getCamera(camera) : camera
     mesh.current.add(cam)
-    console.log('ADDED', cam)
+    console.log('ADDED', cam, gl.xr.isPresenting)
     return () => mesh.current.remove(cam)
   }, [gl.xr.isPresenting, gl.xr, camera, mesh])
 
@@ -80,8 +80,7 @@ export const App = () => {
   }, [controllers, mesh])
 
   useFrame(() => {
-    if (controllers.length) {
-    }
+    // console.log(mesh.current.children[0].position)
   })
 
   const onSqueeze = useCallback(() => console.log('Squeezed', controllers[0]), [
@@ -98,6 +97,7 @@ export const App = () => {
       <Select
         onSelect={() => {
           console.log('SELECTED')
+          mesh.current.children[0].position.set(new THREE.Vector3(10, 10, 10))
           setPosition((s) => new THREE.Vector3(10, 10, 10))
         }}
       >
@@ -105,6 +105,10 @@ export const App = () => {
       </Select>
 
       <mesh position={position} ref={mesh}></mesh>
+
+      <group position={position}>
+        <primitive object={camera} />
+      </group>
 
       <Suspense fallback={<Box position={[4, 0, 0]} />}>
         <Asset url="/HOME.obj" />
